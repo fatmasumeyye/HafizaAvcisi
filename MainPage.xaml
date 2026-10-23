@@ -1,148 +1,144 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="HafizaAvcisi.MainPage"
-    BackgroundColor="#F3E8FF">
-
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="18,15"
-            Spacing="20">
-
-            <!-- Uygulama başlığı -->
-            <Label
-                Text="Hafıza avcısı"
-                FontSize="38"
-                FontAttributes="Bold,Italic"
-                TextColor="Purple"
-                HorizontalOptions="Center" />
-
-            <!-- Üstteki sayaçlar -->
-            <Grid
-                ColumnDefinitions="*,*,*"
-                ColumnSpacing="8">
-
-                <!-- Süre -->
-                <Border Grid.Column="0"
-                        BackgroundColor="White"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 12"
-                        Padding="8,12">
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="⏱ Süre"
-                               FontSize="14"
-                               TextColor="#8050A0"
-                               HorizontalOptions="Center" />
-                        <Label x:Name="SureLabel"
-                               Text="00:00"
-                               FontSize="21"
-                               FontAttributes="Bold"
-                               TextColor="Purple"
-                               HorizontalOptions="Center" />
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HafizaAvcisi.MainPage" BackgroundColor="#F8F2FC"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="#39254F" />
+        </Style>
+        <Style x:Key="Panel" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="White" />
+            <Setter Property="Stroke" Value="#E8DDF2" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 24" />
+            <Setter Property="Padding" Value="12" />
+        </Style>
+        <Style x:Key="Caption" TargetType="Label">
+            <Setter Property="TextColor" Value="#786487" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="Number" TargetType="Label">
+            <Setter Property="TextColor" Value="#633A8B" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid><ScrollView x:Name="OyunGorunumu" IsVisible="False">
+        <VerticalStackLayout Padding="18,20" Spacing="14" MaximumWidthRequest="560" HorizontalOptions="Fill">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <Button Text="‹ Ana sayfa" Clicked="AnaSayfa_Clicked" BackgroundColor="#EDE1F5" TextColor="#704B90" CornerRadius="22" Padding="12,8" VerticalOptions="Center" />
+                <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                    <Label Text="Tatlı eşleşmeler" FontSize="23" FontAttributes="Bold" />
+                    <Label x:Name="OyunBaslikLabel" FontSize="12" TextColor="#87659D" />
+                </VerticalStackLayout>
+            </Grid>
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                <Border Style="{StaticResource Panel}">
+                    <VerticalStackLayout Spacing="3">
+                        <Label Text="Süre" Style="{StaticResource Caption}" />
+                        <Label x:Name="SureLabel" Text="00:00" Style="{StaticResource Number}" />
                     </VerticalStackLayout>
                 </Border>
-
-                <!-- Hamle -->
-                <Border Grid.Column="1"
-                        BackgroundColor="White"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 12"
-                        Padding="8,12">
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="Hamle"
-                               FontSize="14"
-                               TextColor="#8050A0"
-                               HorizontalOptions="Center" />
-                        <Label x:Name="HamleLabel"
-                               Text="0"
-                               FontSize="21"
-                               FontAttributes="Bold"
-                               TextColor="Purple"
-                               HorizontalOptions="Center" />
+                <Border Grid.Column="1" Style="{StaticResource Panel}">
+                    <VerticalStackLayout Spacing="3">
+                        <Label Text="Hamle" Style="{StaticResource Caption}" />
+                        <Label x:Name="HamleLabel" Text="0" Style="{StaticResource Number}" />
                     </VerticalStackLayout>
                 </Border>
-
-                <!-- Eşleşme -->
-                <Border Grid.Column="2"
-                        BackgroundColor="White"
-                        StrokeThickness="0"
-                        StrokeShape="RoundRectangle 12"
-                        Padding="8,12">
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="Eşleşme"
-                               FontSize="14"
-                               TextColor="#8050A0"
-                               HorizontalOptions="Center" />
-                        <Label x:Name="EslesmeLabel"
-                               Text="0/10"
-                               FontSize="21"
-                               FontAttributes="Bold"
-                               TextColor="Purple"
-                               HorizontalOptions="Center" />
+                <Border Grid.Column="2" Style="{StaticResource Panel}">
+                    <VerticalStackLayout Spacing="3">
+                        <Label Text="Eşleşme" Style="{StaticResource Caption}" />
+                        <Label x:Name="EslesmeLabel" Text="0/8" Style="{StaticResource Number}" />
                     </VerticalStackLayout>
                 </Border>
             </Grid>
-
-            <!-- Kartların yerleştirileceği alan -->
-            <Grid
-                x:Name="OyunGrid"
-                ColumnDefinitions="*,*,*,*"
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-                ColumnSpacing="8"
-                RowSpacing="10"
-                HorizontalOptions="Fill" />
-
-            <!-- Oyun durumu -->
-            <VerticalStackLayout Spacing="8">
-                <Label
-                    x:Name="DurumLabel"
-                    Text="Aynı tatlıları bul ve eşleştir!"
-                    FontSize="16"
-                    FontAttributes="Bold"
-                    TextColor="#8050A0"
-                    HorizontalOptions="Center"
-                    HorizontalTextAlignment="Center" />
-
-                <Label
-                    x:Name="IlerlemeLabel"
-                    Text="0 / 10 çift tamamlandı"
-                    FontSize="14"
-                    TextColor="#8050A0"
-                    HorizontalOptions="Center" />
-
-                <Label
-                    x:Name="EnIyiLabel"
-                    Text="En iyi süre: Henüz yok"
-                    FontSize="13"
-                    TextColor="#8050A0"
-                    HorizontalOptions="Center" />
+            <Grid x:Name="OyunGrid" ColumnDefinitions="*,*,*,*" ColumnSpacing="8" RowSpacing="8"
+                  SizeChanged="OyunAlani_BoyutDegisti" />
+            <VerticalStackLayout Spacing="6">
+                <Label x:Name="DurumLabel" FontSize="14" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <ProgressBar x:Name="IlerlemeCubugu" Progress="0" ProgressColor="#9869BD" BackgroundColor="#E8DDF2" />
+                <Label x:Name="IlerlemeLabel" Style="{StaticResource Caption}" />
             </VerticalStackLayout>
-
-            <!-- Alt butonlar -->
-            <Grid
-                ColumnDefinitions="*,*"
-                ColumnSpacing="12">
-
-                <Button
-                    Grid.Column="0"
-                    Text="Yeni Oyun"
-                    Clicked="YeniOyun_Clicked"
-                    BackgroundColor="#9256BF"
-                    TextColor="White"
-                    CornerRadius="12"
-                    HeightRequest="50" />
-
-                <Button
-                    Grid.Column="1"
-                    Text="Sıfırla"
-                    Clicked="Sifirla_Clicked"
-                    BackgroundColor="White"
-                    TextColor="#9256BF"
-                    CornerRadius="12"
-                    HeightRequest="50" />
+            <!-- Tamamlanma özeti aynı sayfada, yeni oyunla birlikte kapanır. -->
+            <Border x:Name="BitisPanel" IsVisible="False" Style="{StaticResource Panel}" BackgroundColor="#EDE2F8">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Tebrikler!" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                    <Label x:Name="BitisLabel" HorizontalTextAlignment="Center" FontSize="15" />
+                    <Label x:Name="RekorLabel" Text="Yeni rekor!" IsVisible="False" TextColor="#633A8B"
+                           FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Border>
+            <Border Style="{StaticResource Panel}">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="3">
+                        <Label x:Name="RekorBaslikLabel" Text="ORTA · EN İYİ SÜRE" FontSize="11" TextColor="#786487" />
+                        <Label x:Name="EnIyiLabel" Text="Henüz skor yok" FontSize="20" FontAttributes="Bold" TextColor="#633A8B" />
+                    </VerticalStackLayout>
+                    <Label Grid.Column="1" Text="✦" FontSize="32" TextColor="#AC83CA" VerticalOptions="Center" />
+                </Grid>
+            </Border>
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Text="Yeni Oyun" Clicked="YeniOyun_Clicked" BackgroundColor="#A17AC2" TextColor="White" CornerRadius="24" />
+                <Button Grid.Column="1" Text="Sıfırla" Clicked="Sifirla_Clicked" BackgroundColor="#F7E5F0" TextColor="#633A8B" CornerRadius="24" />
             </Grid>
-
+            <Label Text="Yeni Oyun karıştırır · Sıfırla dizilimi korur" Style="{StaticResource Caption}" />
         </VerticalStackLayout>
     </ScrollView>
+    <ScrollView x:Name="AnaSayfaGorunumu">
+        <VerticalStackLayout Padding="24,22" Spacing="16" MaximumWidthRequest="560" HorizontalOptions="Fill" VerticalOptions="Center">
+            <Border BackgroundColor="#9676D7" StrokeThickness="0" StrokeShape="RoundRectangle 26"
+                    Padding="0" HeightRequest="96" WidthRequest="96" HorizontalOptions="Center">
+                <Border.Shadow>
+                    <Shadow Brush="#9676D7" Offset="0,4" Radius="12" Opacity="0.18" />
+                </Border.Shadow>
+                <Image Source="hafiza_logo.png" Aspect="AspectFit" HeightRequest="96" WidthRequest="96"
+                       SemanticProperties.Description="Hafıza Avcısı logosu: eşleşen kartlar ve beyin" />
+            </Border>
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Bir tutam dikkat, bolca tatlı!" Style="{StaticResource Caption}" FontSize="13" />
+                <Label Text="Hafıza Avcısı" FontSize="36" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <Label Text="Tatlıları hatırla, çiftlerini bul.&#10;Her eşleşmede biraz sihir keşfet!" FontSize="15" TextColor="#87659D" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+            <!-- Seçimler sayfanın içinde kalır; Android seçim penceresi açılmaz. -->
+            <Border Style="{StaticResource Panel}" Padding="16" StrokeShape="RoundRectangle 28" BackgroundColor="#FFFCFF">
+                <Border.Shadow>
+                    <Shadow Brush="#9E78B8" Offset="0,4" Radius="14" Opacity="0.09" />
+                </Border.Shadow>
+                <VerticalStackLayout Spacing="14">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border BackgroundColor="#FBEAF3" StrokeThickness="0" StrokeShape="RoundRectangle 18" Padding="9" VerticalOptions="Start">
+                            <Image x:Name="MolaIkonu" HeightRequest="36" WidthRequest="36" Aspect="AspectFit" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                            <Label x:Name="MolaBaslikLabel" FontSize="18" FontAttributes="Bold" TextColor="#674180" />
+                            <Label x:Name="MolaAciklamaLabel" FontSize="12" TextColor="#897394" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <BoxView HeightRequest="1" Color="#F0E7F6" />
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Nasıl bir mola olsun?" FontSize="13" FontAttributes="Bold" TextColor="#745787" />
+                        <Grid x:Name="ZorlukSecenekleri" ColumnDefinitions="*,*,*" ColumnSpacing="7" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Oyun teması" FontSize="13" FontAttributes="Bold" TextColor="#745787" />
+                        <FlexLayout x:Name="TemaSecenekleri" Wrap="Wrap" Direction="Row" AlignItems="Start" />
+                    </VerticalStackLayout>
+                    <Border BackgroundColor="#F4EDF9" StrokeThickness="0" StrokeShape="RoundRectangle 16" Padding="10,8">
+                        <Label x:Name="SeviyeLabel" FontSize="12" TextColor="#7D5B94" HorizontalTextAlignment="Center" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+            <Border Style="{StaticResource Panel}" BackgroundColor="#FFF8FC">
+                <VerticalStackLayout Spacing="5">
+                    <Label x:Name="AnaRekorBaslikLabel" Style="{StaticResource Caption}" />
+                    <Label x:Name="AnaRekorLabel" Style="{StaticResource Number}" />
+                </VerticalStackLayout>
+            </Border>
+            <Button Text="Oyuna Başla  ✦" Clicked="OyunaBasla_Clicked" BackgroundColor="#A17AC2" TextColor="White" CornerRadius="28" FontSize="18" FontAttributes="Bold" MinimumHeightRequest="58" />
+            <Label Text="Acele yok, keyfine bak. Süre ilk kartla başlar." Style="{StaticResource Caption}" />
+        </VerticalStackLayout>
+    </ScrollView>
+    </Grid>
 </ContentPage>
